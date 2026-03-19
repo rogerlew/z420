@@ -10,6 +10,22 @@
 | **RAM** | 128 GB DDR3 non-ECC |
 | **GPU** | AMD Radeon RX 580 (Ellesmere) |
 
+## SATA Controller Layout (Intel C602 PCH)
+
+The Z420 has 10 SATA ports across three controllers on the C602 chipset:
+
+| Header | Controller | Speed | Ports | Driver | Planned Use |
+|--------|-----------|-------|-------|--------|-------------|
+| #15 | AHCI | 6 Gb/s | 2 | ahci | Boot SSD (sdd) |
+| #14 | AHCI | 3 Gb/s | 4 | ahci | 3x WD Red 8TB (ZFS) |
+| #17 | SCU | 3 Gb/s | 4 | isci | 3x WD Red 8TB (ZFS) |
+
+Notes:
+- Only 2 ports support SATA III (6 Gb/s) — reserve for SSD
+- 3 Gb/s is not a bottleneck for 5400 RPM HDDs (~180 MB/s max sequential)
+- Splitting HDDs 3+3 across controllers balances I/O for ZFS scrubs/resilvers
+- Reference: HP Maintenance and Service Guide (c04205252.pdf), p19–21
+
 ## Storage
 
 ### Boot Drive
@@ -61,7 +77,11 @@ Key observations:
 - **~38,900 hours** (~4.4 years) of power-on time, consistent with 2019 deployment
 - **Load cycle counts ~34,700–35,000** — normal for NAS duty
 - Temps 37–41°C — well within operating range
-- 4 of 6 drives negotiated at 3.0 Gb/s instead of 6.0 Gb/s (sdc, sde, sdf, sdg) — likely HBA/backplane port limitation, not a drive issue
+- 4 of 6 drives negotiated at 3.0 Gb/s instead of 6.0 Gb/s (sdc, sde, sdf, sdg) — expected, only 2 of 10 onboard ports are 6 Gb/s
+
+### Planned: ZFS RAIDZ2
+
+Replacing mdadm RAID6 with ZFS RAIDZ2 on the 6x WD Red 8TB drives. ~23 TB usable, tolerates 2 simultaneous drive failures.
 
 ## Software
 
