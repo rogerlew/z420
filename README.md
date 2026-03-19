@@ -41,6 +41,28 @@
 
 All arrays healthy — `[UUUUUU]` / `[UU]`.
 
+### SMART Summary (2026-03-19)
+
+Drives originally from a QNAP NAS, in service since ~2019. All 6 report **PASSED**.
+
+| Device | Serial | Power-On Hours | Power Cycles | Temp | Realloc | Pending | CRC Errors | SATA Link |
+|--------|--------|---------------|-------------|------|---------|---------|------------|-----------|
+| sda | VAJ124WL | 38,880 (4.4 yr) | 418 | 40°C | 0 | 0 | 0 | 6.0 Gb/s |
+| sdb | VAJ1GV4L | 38,868 (4.4 yr) | 419 | 38°C | 0 | 0 | 0 | 6.0 Gb/s |
+| sdc | VAJ16XJL | 38,929 (4.4 yr) | 415 | 37°C | 0 | 0 | 0 | 3.0 Gb/s |
+| sde | VAJ1BWSL | 38,948 (4.4 yr) | 416 | 40°C | 0 | 0 | 0 | 3.0 Gb/s |
+| sdf | VAJ0ZM9L | 38,915 (4.4 yr) | 416 | 41°C | 0 | 0 | 0 | 3.0 Gb/s |
+| sdg | VAHUTYRL | 38,901 (4.4 yr) | 416 | 40°C | 0 | 0 | 0 | 3.0 Gb/s |
+
+Key observations:
+- **Zero reallocated sectors** across all drives — no bad blocks
+- **Zero pending sectors** — no sectors waiting to be remapped
+- **Zero CRC errors** — clean cable/controller connections
+- **~38,900 hours** (~4.4 years) of power-on time, consistent with 2019 deployment
+- **Load cycle counts ~34,700–35,000** — normal for NAS duty
+- Temps 37–41°C — well within operating range
+- 4 of 6 drives negotiated at 3.0 Gb/s instead of 6.0 Gb/s (sdc, sde, sdf, sdg) — likely HBA/backplane port limitation, not a drive issue
+
 ## Software
 
 | Component | Detail |
